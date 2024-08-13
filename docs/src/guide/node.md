@@ -369,14 +369,26 @@ import { useNode } from '@vue-flow/core'
 const { node } = useNode()
 
 function onSomeEvent() {
-  node.data = {
-    ...node.data,  
-    hello: 'world',
+  const nodeIndex = nodes.value.findIndex(node => node.id === nodeId);
+
+  if (nodeIndex !== -1) {
+    const updatedNodes = [...nodes.value];
+
+    updatedNodes[nodeIndex] = {
+      ...updatedNodes[nodeIndex],
+      data: {
+        ...updatedNodes[nodeIndex].data,
+        hello: 'world',
+        label: 'Updated Label',
+      },
+
+      // you can also mutate properties like `selectable` or `draggable`
+      selectable: false,
+      draggable: false,
+    };
+
+    nodes.value = updatedNodes;
   }
-  
-  // you can also mutate properties like `selectable` or `draggable`
-  node.selectable = false
-  node.draggable = false
 }
 </script>
 ```
